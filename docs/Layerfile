@@ -9,10 +9,12 @@ RUN sudo apt-get install -y nodejs
 
 RUN sudo npm install npm@8.1.2 -g
 
-RUN node --version
-RUN npm --version
+RUN sudo npm install --global serve
+RUN sudo apt install xsel
 
 RUN npm install
-RUN BACKGROUND npm run start
+RUN npm run build
+
+RUN serve build/ -n
 
 EXPOSE WEBSITE http://localhost:3000
