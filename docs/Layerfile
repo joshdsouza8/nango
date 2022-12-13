@@ -1,0 +1,18 @@
+FROM vm/ubuntu:18.04
+
+COPY . .
+
+LABEL display_name=Docusaurus
+
+RUN curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+RUN sudo apt-get install -y nodejs
+
+RUN sudo npm install npm@8.1.2 -g
+
+RUN node --version
+RUN npm --version
+
+RUN npm install
+RUN BACKGROUND npm run start
+
+EXPOSE WEBSITE http://localhost:3000

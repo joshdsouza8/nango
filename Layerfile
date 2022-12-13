@@ -2,6 +2,8 @@ FROM vm/ubuntu:18.04
 
 MEMORY 2G
 
+LABEL display_name=NangoAPI
+
 # install the latest version of Docker, as in the official Docker installation tutorial.
 RUN apt-get update && \
     apt-get install ca-certificates curl gnupg lsb-release && \
@@ -17,19 +19,20 @@ RUN apt-get update && \
 RUN curl -L https://github.com/docker/compose/releases/download/1.29.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
 RUN chmod +x /usr/local/bin/docker-compose
 
-
-# Verify docker compose is installed
-RUN docker-compose --version
-
+# Get the files from github
 COPY . .
 
 # Install dependencies
 RUN docker-compose up -d
 
-# Expose website to pull data and for the database
-EXPOSE WEBSITE http://localhost:3003
+
+# Expose the URL so we can trigger a Nango job (we use /api since we can only have one EXPOSE WEBSITE in a Layerfile)
+EXPOSE WEBSITE http://localhost:3003 /api
+
+# Expose the Database
 EXPOSE WEBSITE http://localhost:8080
 
-# Start the data sync with the pokeapi
+# Start a Nango Job
 RUN curl --request POST --url http://localhost:3003/v1/syncs --header "Content-type: application/json" --data '{"url": "https://pokeapi.co/api/v2/pokemon", "response_path": "results", "paging_url_path":"next", "mapped_table":"pokemons", "frequency":"1 minute"}'
+
 
