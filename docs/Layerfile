@@ -17,4 +17,4 @@ RUN npm run build
 
 RUN BACKGROUND serve build/ -n
 
-EXPOSE WEBSITE http://localhost:3000 /docs
+EXPOSE WEBSITE http://localhost:3000
