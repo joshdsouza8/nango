@@ -27,7 +27,7 @@ COPY . .
 RUN docker-compose up -d
 
 # Expose website to pull data and for the database
-EXPOSE WEBSITE http://localhost:3003/v1/syncs
+EXPOSE WEBSITE http://localhost:3003
 EXPOSE WEBSITE http://localhost:8080
 
 # Start the data sync with the pokeapi
