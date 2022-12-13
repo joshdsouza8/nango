@@ -26,11 +26,10 @@ COPY . .
 # Install dependencies
 RUN docker-compose up -d
 
-# Start the data sync with the pokeapi
-RUN curl --request POST \
-    --url http://localhost:3003/v1/syncs \
-    --header "Content-type: application/json" \
-    --data '{"url": "https://pokeapi.co/api/v2/pokemon", "response_path": "results", "paging_url_path":"next", "mapped_table":"pokemons", "frequency":"1 minute"}'
-
-# Expose website
+# Expose website to pull data and for the database
+EXPOSE WEBSITE http://localhost:3003/v1/syncs
 EXPOSE WEBSITE http://localhost:8080
+
+# Start the data sync with the pokeapi
+RUN curl --request POST --url http://localhost:3003/v1/syncs --header "Content-type: application/json" --data '{"url": "https://pokeapi.co/api/v2/pokemon", "response_path": "results", "paging_url_path":"next", "mapped_table":"pokemons", "frequency":"1 minute"}'
+
